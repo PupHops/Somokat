@@ -1,0 +1,44 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<head>
+    <link rel="stylesheet" href="~/css/Style.css"/>
+</head>
+
+    <div id="map-test" class="map"></div>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=f3071c7e-23dc-482b-a363-27489898cb71&lang=ru_RU"></script>
+    <script src="~/js/scritps.js"></script>
+<div class="burger-menu">
+    <input id="menu-toggle" type="checkbox" />
+    <label class="menu-btn" for="menu-toggle">
+        <span></span>
+    </label>
+
+    <div class="menubox">
+        <div class="menu-box-element">
+            <a class="menu-item">Профиль</a>
+            <span class="menu-item">+7 999 999-99-99</span>
+            
+        </div>
+        <div class="menu-box-element">
+            <a class="menu-item" href="#">Баланс</a>
+            <span class="menu-item">999 ₽</span>
+            <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 36 36" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.46759 9.00577H32.338C34.3142 9.00577 35.9311 10.6227 35.9311 12.5989V32.361C35.9311 34.3372 34.3142 35.9541 32.338 35.9541H3.59311C1.6169 35.9541 0 34.3372 0 32.361V8.46681C0 6.67025 1.25759 5.23301 3.05414 4.8737L30.1821 0.0230059C31.26 -0.156649 32.338 0.741627 32.338 1.81956V4.51439L3.59311 7.20922C3.59311 7.92784 4.31173 9.00577 6.46759 9.00577ZM26.9483 22.4799C26.9483 23.9172 28.2059 25.1748 29.6431 25.1748C31.0803 25.1748 32.3379 23.9172 32.3379 22.4799C32.3379 21.0427 31.0803 19.7851 29.6431 19.7851C28.2059 19.7851 26.9483 21.0427 26.9483 22.4799Z" fill="#3282FA" />
+            </svg>
+        </div>
+        <div class="menu-box-element">
+            <a class="menu-item" href="#">Помощь</a>
+            <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 34 56" fill="none">
+                <path d="M16.8974 0C11.0825 0 6.77264 1.82 4.03622 4.62C1.2998 7.42 0.342052 10.92 0 13.58L6.84105 14.49C7.11469 12.74 7.66197 10.99 8.96177 9.66C10.2616 8.33 12.3139 7 16.8974 7C21.4125 7 23.8753 8.12 25.2435 9.38C26.6117 10.64 27.159 12.18 27.159 14C27.159 19.81 24.833 21.42 21.4125 24.5C17.992 27.58 13.4769 32.06 13.4769 40.25V42H20.3179V40.25C20.3179 34.44 22.4386 32.83 25.8592 29.75C29.2797 26.67 34 22.19 34 14C34 10.64 32.837 6.86 29.9638 4.13C27.0221 1.4 22.6439 0 16.8974 0ZM13.4769 49V56H20.3179V49H13.4769Z" fill="#3282FA" />
+            </svg>
+        </div>
+        <div class="menu-box-element"><a class="menu-item" href="#">История поездок</a>
+            <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <path d="M32.0972 0.194328C14.5506 0.194328 0.194336 14.5506 0.194336 32.0972C0.194336 49.6437 14.5506 64 32.0972 64C49.6437 64 64 49.6437 64 32.0972C64 14.5506 49.6437 0.194328 32.0972 0.194328ZM32.0972 8.17004C45.3368 8.17004 56.0243 18.8575 56.0243 32.0972C56.0243 45.3368 45.3368 56.0243 32.0972 56.0243C18.8575 56.0243 8.17004 45.3368 8.17004 32.0972C8.17004 18.8575 18.8575 8.17004 32.0972 8.17004ZM28.1093 16.1457V33.8518L29.3854 34.8887L33.3733 38.8765L36.085 41.9073L41.8275 36.1648L38.7968 33.453L36.085 30.7413V16.3053H28.1093V16.1457Z" fill="#3282FA" />
+            </svg>
+        </div>
+    </div>
+</div>

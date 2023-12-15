@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\Style.css" />
+    <None Include="wwwroot\Fonts\OFL.txt" />
+    <None Include="wwwroot\Fonts\Poppins-Black.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-BlackItalic.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-Bold.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-BoldItalic.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-ExtraBold.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-ExtraBoldItalic.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-ExtraLight.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-ExtraLightItalic.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-Italic.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-Light.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-LightItalic.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-Medium.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-MediumItalic.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-Regular.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-SemiBold.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-SemiBoldItalic.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-Thin.ttf" />
+    <None Include="wwwroot\Fonts\Poppins-ThinItalic.ttf" />
+    <None Include="wwwroot\js\scritps.js" />
+  </ItemGroup>
+
+</Project>
