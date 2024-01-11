@@ -16,6 +16,21 @@
 [class*="copyrights-pane"] {
     display: none !important;
 }
+.menu-centerrrrr {
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    width: 70px;
+    height: 70px;
+    background: url(../images/center.svg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size:contain;
+    cursor: pointer;
+    z-index: 1;
+    border-color: rgba(0,0,0,0.0);
+    
+}
 .menu-btn {
     display: flex;
     align-items: center;
