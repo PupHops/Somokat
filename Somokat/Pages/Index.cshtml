@@ -5,56 +5,15 @@
 @{
 
     ViewData["Title"] = "Home page";
-
-    SomokatContext context = new();
-    var data = context.ChargingStations;
-   
-    var json = JsonConvert.SerializeObject(data);
-    JArray jsonArray = JArray.Parse(json);
-    JArray features = new JArray();
-
-    int idCounter = 0;
-    foreach (JObject obj in jsonArray)
-    {
-        double x = (double)obj["Location"]["X"];
-        double y = (double)obj["Location"]["Y"];
-
-        JObject geometry = new JObject(
-            new JProperty("type", "Point"),
-            new JProperty("coordinates", new JArray { x, y })
-        );
-
-        JObject properties = new JObject(
-            new JProperty("balloonContent", "Содержимое балуна")
-        );
-
-        JObject feature = new JObject(
-            new JProperty("type", "Feature"),
-            new JProperty("id", idCounter),
-            new JProperty("geometry", geometry),
-            new JProperty("properties", properties)
-        );
-
-        features.Add(feature);
-        idCounter++;
-    }
-
-    JObject featureCollection = new JObject(
-        new JProperty("type", "FeatureCollection"),
-        new JProperty("features", features)
-    );
-
-    string json2 = featureCollection.ToString();
-
-    if(true){}
+    if(true){
 }
 
-<script>
-    var data = @Html.Raw(Convert.ToString(features)); // Вставляем JSON в JavaScript переменную
-    console.log(data); // Выводим данные в консоль (для проверки)
 
-        // Теперь вы можете использовать переменную data в вашем JavaScript коде
-</script>
+
+   
+    
+
+}
 <head>
     <link rel="stylesheet" href="~/css/Style.css" />
 </head>

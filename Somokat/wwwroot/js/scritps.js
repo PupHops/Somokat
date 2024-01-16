@@ -6,11 +6,20 @@ const options = {
     timeout: 5000,
     maximumAge: 0,
 };
+const express = require('express');
+const app = express();
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Разрешить доступ всем доменам (не безопасно для продакшена)
+    // Другие заголовки и настройки могут быть добавлены по необходимости
+    next();
+});
+app.use(cors());
 
 function success(pos) {
     const crd = pos.coords;
 
-    console.log("Your current position is:");
+    console.log("Your currrrrrrrrrrrrrrrrrrent position is:");
     console.log(`Latitude : ${crd.latitude}`);
     console.log(`Longitude: ${crd.longitude}`);
     center = [crd.latitude, crd.longitude];
@@ -45,36 +54,20 @@ function init() {
         }
     });
     map.controls.add(secondButton);
+   
 
-    geolocation.get({
-            provider: 'browser',
-            mapStateAutoApply: true
-    }).then(function (result) {
-            // Синим цветом пометим положение, полученное через браузер.
-            // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
-            result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
-            map.geoObjects.add(result.geoObjects);
+    jQuery.getJSON('http://localhost:5141/Somokat', function (json) {
+        /** Сохраним ссылку на геообъекты на случай, если понадобится какая-либо постобработка.
+         * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/GeoQueryResult.xml
+        */
+        var geoObjects = ym.geoQuery(json)
+            .addToMap(map)
+            .applyBoundsToMap(map, {
+                checkZoomRange: true
+            });
     });
+ 
 
-    objectManager = new ymaps.ObjectManager({
-        // Чтобы метки начали кластеризоваться, выставляем опцию.
-        clusterize: true,
-        // ObjectManager принимает те же опции, что и кластеризатор.
-        gridSize: 32,
-        clusterDisableClickZoom: true
-    });
-
-    // Чтобы задать опции одиночным объектам и кластерам,
-    // обратимся к дочерним коллекциям ObjectManager.
-    objectManager.objects.options.set('preset', 'islands#greenDotIcon');
-    objectManager.clusters.options.set('preset', 'islands#greenClusterIcons');
-    map.geoObjects.add(objectManager);
-
-    $.ajax({
-        url: "data.json"
-    }).done(function (data) {
-        objectManager.add(data);
-    });
 
     map.controls.remove('searchControl'); // удаляем поиск
     map.controls.remove('trafficControl'); // удаляем контроль трафика
