@@ -9,7 +9,7 @@ namespace SomokatAPI.Controllers
     [Route("[controller]")]
     public class SomokatController : Controller
     {
-        [HttpPost]
+        [HttpGet]
         public IActionResult GetJsonData()
         {
             SomokatContext context = new();

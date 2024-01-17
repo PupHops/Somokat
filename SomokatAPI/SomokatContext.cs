@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Somokat;
+using Somokat;
+namespace SomokatAPI;
 
 public partial class SomokatContext : DbContext
 {
