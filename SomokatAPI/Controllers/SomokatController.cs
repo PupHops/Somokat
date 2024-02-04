@@ -12,47 +12,45 @@ namespace SomokatAPI.Controllers
         [HttpGet]
         public IActionResult GetJsonData()
         {
-            SomokatContext context = new();
-            var data = context.ChargingStations;
-
-            var json = JsonConvert.SerializeObject(data);
-            JArray jsonArray = JArray.Parse(json);
-            JArray features = new JArray();
-
-            int idCounter = 0;
-            foreach (JObject obj in jsonArray)
+            string jsonResult = null;
+            using (var dbContext = new SomokatContext())
             {
-                double x = (double)obj["Location"]["X"];
-                double y = (double)obj["Location"]["Y"];
+                // Получение списка скутеров из базы данных
+                List<Scooter> scooters = dbContext.Scooters.ToList();
 
-                JObject geometry = new JObject(
-                    new JProperty("type", "Point"),
-                    new JProperty("coordinates", new JArray { x, y })
-                );
+                // Преобразование в JSON формат
+                jsonResult = ConvertToGeoJson(scooters);
+            }
+            static string ConvertToGeoJson(List<Scooter> scooters)
+            {
+                var featureCollection = new
+                {
+                    type = "FeatureCollection",
+                    features = scooters.Select(scooter => new
+                    {
+                        type = "Feature",
+                        id = scooter.Id,
+                        geometry = new
+                        {
+                            type = "Point",
+                            coordinates = new[] { scooter.Location.X, scooter.Location.Y }
+                        },
+                        properties = new
+                        {
+                            balloonContent = $"{scooter.BatteryLevel};{scooter.IdStatus}",
+                            clusterCaption = "Еще одна метка",
+                            hintContent = "Текст подсказки"
+                        }
+                    }).ToList()
+                };
 
-                JObject properties = new JObject(
-                    new JProperty("balloonContent", "Содержимое балуна")
-                );
-
-                JObject feature = new JObject(
-                    new JProperty("type", "Feature"),
-                    new JProperty("id", idCounter),
-                    new JProperty("geometry", geometry),
-                    new JProperty("properties", properties)
-                );
-
-                features.Add(feature);
-                idCounter++;
+                return JsonConvert.SerializeObject(featureCollection);
             }
 
-            JObject featureCollection = new JObject(
-                new JProperty("type", "FeatureCollection"),
-                new JProperty("features", features)
-            );
-
-            string json2 = featureCollection.ToString();
-            return Content(json2, "application/json");
+            return Content(jsonResult, "application/json");
         }
     }
+
+
 }
 

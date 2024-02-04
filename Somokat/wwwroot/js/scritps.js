@@ -38,11 +38,38 @@ function init() {
         /** Сохраним ссылку на геообъекты на случай, если понадобится какая-либо постобработка.
          * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/GeoQueryResult.xml
         */
-        var geoObjects = map.geoQuery(json)
+        var geoObjects = ymaps.geoQuery(json)
             .addToMap(map)
             .applyBoundsToMap(map, {
+
                 checkZoomRange: true
             });
+
+       
+
+        geoObjects.setOptions({
+            openBalloonOnClick: false,
+            iconLayout: 'default#image',
+            iconImageHref: 'images/scooter.svg',
+            iconImageSize: [60, 67],
+            iconImageOffset: [-25, -52]
+        });
+        geoObjects.each(function (geoObject) {
+            geoObject.events.add('click', function (e) {
+                // Получение содержимого балуна
+                var balloonContent = geoObject.properties.get('balloonContent');
+                map.panTo(geoObject.geometry.getCoordinates(), {
+                    flying: true
+                });
+
+                // Обновление содержимого всплывающего окна на вашем сайте
+              //  updatePopupContent(balloonContent);
+            });
+        });
+    }).fail(function (jqxhr, textStatus, error) {
+        // Обработка ошибок загрузки JSON
+        var err = textStatus + ", " + error;
+        console.error("Request Failed: " + err);
     });
 
     var a = document.getElementById('geo');
