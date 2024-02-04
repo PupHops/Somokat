@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace Somokat;
-
+//dsaasgsfhgsdhds
 public partial class UserAccount
 {
     public int Id { get; set; }
