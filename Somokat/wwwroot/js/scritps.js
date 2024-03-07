@@ -11,7 +11,7 @@ const options = {
 function success(pos) {
     const crd = pos.coords;
 
-    console.log("Your currrrrent position is:");
+    console.log("Your current position is:");
     console.log(`Latitude : ${crd.latitude}`);
     console.log(`Longitude: ${crd.longitude}`);
     center = [crd.latitude, crd.longitude];
@@ -44,13 +44,10 @@ function init() {
 
                 checkZoomRange: true
             });
-
-       
-
         geoObjects.setOptions({
             openBalloonOnClick: false,
             iconLayout: 'default#image',
-            iconImageHref: 'images/scooter.svg',
+            iconImageHref: 'https://localhost:7099/images/scooter.svg',
             iconImageSize: [60, 67],
             iconImageOffset: [-25, -52]
         });
