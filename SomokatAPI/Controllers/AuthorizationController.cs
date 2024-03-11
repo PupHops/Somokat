@@ -7,8 +7,8 @@ namespace SomokatAPI.Controllers
 {
     public class AuthRequestBody
     {
-        public string PhoneNumber{ get; set; }
-        
+        public string PhoneNumber { get; set; }
+
     }
 
     [ApiController]
@@ -19,22 +19,33 @@ namespace SomokatAPI.Controllers
     {
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] AuthRequestBody PhoneNumber)
+        public IActionResult Login([FromBody] AuthRequestBody requestBody)
         {
-            using (var dbContext = new SomokatContext())
-            {
-                // Получение списка скутеров из базы данных
-                List<UserAccount> _UserAccount = dbContext.UserAccounts.ToList();
-                var auth = _UserAccount.SingleOrDefault(u => u.PhoneNumber == PhoneNumber.PhoneNumber);
-                if (auth == null)
-                {
-                    return StatusCode(401);
-                }
-                return StatusCode(200);
-            }
-            // Поиск пользователя в базе данных
 
-        
+                if (string.IsNullOrWhiteSpace(requestBody?.PhoneNumber))
+                {
+                    return BadRequest("Phone number cannot be empty.");
+                }
+
+                using (var dbContext = new SomokatContext())
+                {
+                    List<UserAccount> userAccounts = dbContext.UserAccounts.ToList();
+
+                    UserAccount authUser = userAccounts.SingleOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber);
+
+                    if (authUser == null)
+                    {
+                        return StatusCode(401, "Unauthorized: User not found");
+                    }
+
+                    // Ваша логика проверки пароля или других параметров, если необходимо
+
+                    return StatusCode(200, "Authorized");
+                }
         }
+
+
     }
-}
+    }
+
+

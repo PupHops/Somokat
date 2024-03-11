@@ -3,6 +3,48 @@
     font-family: 'Poppins';
     src:url('../Fonts/Poppins-Regular.ttf') format('truetype');
 }
+.full-screen-div {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ccc; /* Цвет фона вашего div */
+    z-index: 9998; /* Устанавливает div поверх остального контента */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.containerrr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 400px; /* Занимаем 100% высоты экрана */
+    background-color: #3498db; /* Голубой цвет, можно изменить на другой по желанию */
+    padding: 20px; /* Добавляем отступ от краев контейнера */
+    border-radius: 10px; /* Закругляем углы контейнера */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Добавляем небольшую тень для эффекта поднятия */
+}
+
+    /* Дополнительные стили для элементов внутри контейнера, если необходимо */
+    .containerrr h1 {
+        color: #ffffff; /* Белый цвет текста */
+        font-size: 24px; /* Размер шрифта */
+        margin-bottom: 10px; /* Добавляем отступ снизу между заголовком и следующим элементом */
+    }
+
+.containerrr p {
+    color: #ffffff; /* Белый цвет текста */
+    font-size: 18px; /* Размер шрифта */
+    margin-bottom: 20px; /* Добавляем больший отступ между параграфами */
+}
+
+    /* Пример добавления отступов для красивого внешнего вида */
+.containerrr > * {
+    margin: 10px;
+}
 
 .map {
     position: fixed;
