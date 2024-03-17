@@ -26,6 +26,85 @@ function error(err) {
 
 navigator.geolocation.getCurrentPosition(success, error, options);
 
+
+// Создаем скрытый элемент для всплывающего окна с информацией о самокате
+var popupElement = $('<div id="scooterPopup"></div>')
+    .css({
+        position: 'fixed',
+        bottom: '0',
+        left: '0',
+        width: '100%', // Установка ширины на половину экрана
+        height: '50%', // Установка высоты на половину экрана
+        background: '#fff',
+        padding: '20px',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+        display: 'none',
+        zIndex: 9999 // Устанавливаем z-index, чтобы окно было поверх остального контента
+    })
+    .appendTo('body');
+
+// Доб  авляем кнопку закрытия
+var closeButton = $('<button class="close-btn">Close</button>')
+    .css({
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        padding: '5px 10px',
+        background: '#ccc',
+        border: 'none',
+        cursor: 'pointer'
+    })
+    .appendTo(popupElement);
+
+// Функция для обновления содержимого всплывающего окна
+function updatePopupContent(content) {
+    popupElement.html(content);
+}
+
+// Функция для показа всплывающего окна
+function showPopup() {
+    popupElement.slideDown();
+}
+
+// Создаем подложку для блокировки пространства за всплывающим окном
+var overlayElement = $('<div id="overlay"></div>')
+    .css({
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        background: 'rgba(0, 0, 0, 0.5)', // Полупрозрачный цвет
+        zIndex: 9998, // Устанавливаем z-index, чтобы подложка была ниже всплывающего окна
+        display: 'none'
+    })
+    .appendTo('body');
+
+// Функция для показа подложки
+function showOverlay() {
+    overlayElement.fadeIn();
+}
+
+// Функция для скрытия подложки
+function hideOverlay() {
+    overlayElement.fadeOut();
+}
+
+// Обработчик клика на подложку для закрытия окна
+overlayElement.on('click', function () {
+    hidePopup();
+    hideOverlay();
+});
+// Функция для показа всплывающего окна
+function showPopup() {
+    popupElement.fadeIn();
+}
+
+// Функция для скрытия всплывающего окна
+function hidePopup() {
+    popupElement.fadeOut();
+}
+
 function init() {
     var geolocation = ymaps.geolocation;
     let map = new ymaps.Map('map-test', {
@@ -53,14 +132,12 @@ function init() {
         });
         geoObjects.each(function (geoObject) {
             geoObject.events.add('click', function (e) {
-                // Получение содержимого балуна
                 var balloonContent = geoObject.properties.get('balloonContent');
-                map.panTo(geoObject.geometry.getCoordinates(), {
-                    flying: true
-                });
+                map.panTo(geoObject.geometry.getCoordinates(), { flying: true });
+                updatePopupContent(balloonContent);
+                showPopup();
+                showOverlay(); // Показываем подложку
 
-                // Обновление содержимого всплывающего окна на вашем сайте
-              //  updatePopupContent(balloonContent);
             });
         });
     }).fail(function (jqxhr, textStatus, error) {
@@ -76,9 +153,7 @@ function init() {
             provider: 'browser',
             mapStateAutoApply: true
         }).then(function (result) {
-            // Синим цветом пометим положение, полученное через браузер.
-            // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
-
+            
             result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
             map.geoObjects.remove(result.geoObjects);
             map.geoObjects.add(result.geoObjects);
