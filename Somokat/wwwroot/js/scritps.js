@@ -27,45 +27,6 @@ function error(err) {
 navigator.geolocation.getCurrentPosition(success, error, options);
 
 
-// Создаем скрытый элемент для всплывающего окна с информацией о самокате
-var popupElement = $('<div id="scooterPopup"></div>')
-    .css({
-        position: 'fixed',
-        bottom: '0',
-        left: '0',
-        width: '100%', // Установка ширины на половину экрана
-        height: '50%', // Установка высоты на половину экрана
-        background: '#fff',
-        padding: '20px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
-        display: 'none',
-        zIndex: 9999 // Устанавливаем z-index, чтобы окно было поверх остального контента
-    })
-    .appendTo('body');
-
-// Доб  авляем кнопку закрытия
-var closeButton = $('<button class="close-btn">Close</button>')
-    .css({
-        position: 'absolute',
-        top: '10px',
-        right: '10px',
-        padding: '5px 10px',
-        background: '#ccc',
-        border: 'none',
-        cursor: 'pointer'
-    })
-    .appendTo(popupElement);
-
-// Функция для обновления содержимого всплывающего окна
-function updatePopupContent(content) {
-    popupElement.html(content);
-}
-
-// Функция для показа всплывающего окна
-function showPopup() {
-    popupElement.slideDown();
-}
-
 // Создаем подложку для блокировки пространства за всплывающим окном
 var overlayElement = $('<div id="overlay"></div>')
     .css({
@@ -80,30 +41,31 @@ var overlayElement = $('<div id="overlay"></div>')
     })
     .appendTo('body');
 
-// Функция для показа подложки
-function showOverlay() {
-    overlayElement.fadeIn();
-}
 
-// Функция для скрытия подложки
-function hideOverlay() {
-    overlayElement.fadeOut();
-}
 
-// Обработчик клика на подложку для закрытия окна
-overlayElement.on('click', function () {
-    hidePopup();
-    hideOverlay();
-});
 // Функция для показа всплывающего окна
 function showPopup() {
-    popupElement.fadeIn();
+    $('#popup').fadeIn();
+    $('#overlay').fadeIn();
 }
 
 // Функция для скрытия всплывающего окна
 function hidePopup() {
-    popupElement.fadeOut();
+    console.log('hui');
+    $('#popup').fadeOut();
+    $('#overlay').fadeOut();
 }
+
+// Обработчик клика на подложку для закрытия всплывающего окна
+$('#overlay').click(function () {
+    console.log('hui');
+
+    hidePopup();
+});
+
+$(document).on('click', '#overlay', function () {
+    hidePopup();
+});
 
 function init() {
     var geolocation = ymaps.geolocation;
@@ -133,10 +95,17 @@ function init() {
         geoObjects.each(function (geoObject) {
             geoObject.events.add('click', function (e) {
                 var balloonContent = geoObject.properties.get('balloonContent');
-                map.panTo(geoObject.geometry.getCoordinates(), { flying: true });
-                updatePopupContent(balloonContent);
+                var contentParts = balloonContent.split(';');
+                var chargeLevel = contentParts[0];
+                var deviceState = contentParts[1];
+                var scooterName = "Название самоката"; // Замените на реальное название самоката
+                var scooterNumber = "Номер самоката"; // Замените на реальный номер самоката
+                var imageUrl = "url_картинки"; // Замените на реальный URL картинки
+                $('#scooter-image').attr('src', imageUrl);
+                $('#scooter-name').text(scooterName);
+                $('#scooter-number').text('Номер самоката: ' + scooterNumber);
+                $('#charge-level').text('Уровень заряда: ' + chargeLevel);
                 showPopup();
-                showOverlay(); // Показываем подложку
 
             });
         });
