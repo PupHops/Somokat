@@ -38,8 +38,8 @@ namespace SomokatAPI.Controllers
                         properties = new
                         {
                             balloonContent = $"{scooter.BatteryLevel};{scooter.IdStatus}",
-                            clusterCaption = "Еще одна метка",
-                            hintContent = "Текст подсказки"
+                            clusterCaption = "",
+                            hintContent = ""
                         }
                     }).ToList()
                 };

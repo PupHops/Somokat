@@ -87,6 +87,7 @@ function init() {
             });
         geoObjects.setOptions({
             openBalloonOnClick: false,
+            hasBalloon: false,
             iconLayout: 'default#image',
             iconImageHref: 'https://localhost:7099/images/scooter.svg',
             iconImageSize: [60, 67],
@@ -100,11 +101,13 @@ function init() {
                 var deviceState = contentParts[1];
                 var scooterName = "Название самоката"; // Замените на реальное название самоката
                 var scooterNumber = "Номер самоката"; // Замените на реальный номер самоката
-                var imageUrl = "url_картинки"; // Замените на реальный URL картинки
+                var imageUrl = 'https://localhost:7099//images/Samokat.png'; // Замените на реальный URL картинки
                 $('#scooter-image').attr('src', imageUrl);
                 $('#scooter-name').text(scooterName);
                 $('#scooter-number').text('Номер самоката: ' + scooterNumber);
                 $('#charge-level').text('Уровень заряда: ' + chargeLevel);
+                $('#charge-progress').attr('value', chargeLevel);
+
                 showPopup();
 
             });
