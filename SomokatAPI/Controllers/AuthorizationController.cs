@@ -21,31 +21,31 @@ namespace SomokatAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] AuthRequestBody requestBody)
         {
+            if (string.IsNullOrWhiteSpace(requestBody?.PhoneNumber))
+            {
+                return BadRequest("Phone number cannot be empty.");
+            }
 
-                if (string.IsNullOrWhiteSpace(requestBody?.PhoneNumber))
+            using (var dbContext = new SomokatContext())
+            {
+                // Поиск пользователя по номеру телефона
+                UserAccount authUser = dbContext.UserAccounts.FirstOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber);
+
+                if (authUser == null)
                 {
-                    return BadRequest("Phone number cannot be empty.");
+                    return StatusCode(401, "Unauthorized: User not found");
                 }
 
-                using (var dbContext = new SomokatContext())
-                {
-                    List<UserAccount> userAccounts = dbContext.UserAccounts.ToList();
+                // Ваша логика проверки пароля или других параметров, если необходимо
 
-                    UserAccount authUser = userAccounts.SingleOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber);
-
-                    if (authUser == null)
-                    {
-                        return StatusCode(401, "Unauthorized: User not found");
-                    }
-
-                    // Ваша логика проверки пароля или других параметров, если необходимо
-
-                    return StatusCode(200, "Authorized");
-                }
+                // Возвращаем код 200 и количество бонусов пользователя
+                return StatusCode(200, new { authUser.Bonus });
+            }
         }
 
 
+
     }
-    }
+}
 
 

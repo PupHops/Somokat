@@ -99,13 +99,11 @@ function init() {
                 var contentParts = balloonContent.split(';');
                 var chargeLevel = contentParts[0];
                 var deviceState = contentParts[1];
-                var scooterName = "Название самоката"; // Замените на реальное название самоката
-                var scooterNumber = "Номер самоката"; // Замените на реальный номер самоката
+                var scooterName = "AbobaScooter"; // Замените на реальное название самоката
+                var scooterNumber = deviceState; // Замените на реальный номер самоката
                 var imageUrl = 'https://localhost:7099//images/Samokat.png'; // Замените на реальный URL картинки
                 $('#scooter-image').attr('src', imageUrl);
                 $('#scooter-name').text(scooterName);
-                $('#scooter-number').text('Номер самоката: ' + scooterNumber);
-                $('#charge-level').text('Уровень заряда: ' + chargeLevel);
                 $('#charge-progress').attr('value', chargeLevel);
 
                 showPopup();

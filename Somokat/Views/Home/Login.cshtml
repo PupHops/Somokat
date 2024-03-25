@@ -49,11 +49,13 @@
             url: 'https://localhost:7209/Authorization/login',
             method: 'POST',
             contentType: 'application/json', // Установка заголовка Content-Type
-            data: JSON.stringify({ PhoneNumber: phoneNumber }), // Преобразование объекта в JSON
-            success: function (data, textStatus, xhr) {
+            data: JSON.stringify(data),
+            success: function (response, textStatus, xhr) {
+                console.log('Бонус: ' + response.bonus);
+    
                 // Переход на другую страницу при статусе 200
                 if (xhr.status === 200) {
-                    window.location.href = 'https://localhost:7099/Home/';
+                    window.location.href = 'https://localhost:7099/Home/?bonus=' + response.bonus;
                 } else {
                     alert('Error: ' + xhr.status);
                 }
