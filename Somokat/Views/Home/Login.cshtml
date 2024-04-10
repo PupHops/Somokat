@@ -52,10 +52,13 @@
             data: JSON.stringify(data),
             success: function (response, textStatus, xhr) {
                 console.log('Бонус: ' + response.bonus);
-    
+
                 // Переход на другую страницу при статусе 200
                 if (xhr.status === 200) {
-                    window.location.href = 'https://localhost:7099/Home/?bonus=' + response.bonus;
+
+                    localStorage.setItem('balance', JSON.stringify(response.bonus));
+
+                    window.location.href = 'https://localhost:7099/Home/';
                 } else {
                     alert('Error: ' + xhr.status);
                 }
@@ -64,5 +67,7 @@
                 alert('Пользователь не найден.');
             }
         });
+
+       
     }
 </script>

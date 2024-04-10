@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="~/css/Style.css" />
 </head>
 <div id="popup" class="popup">
-    <div id="bonusDisplay"></div>
+    <div class="menu-item"  id="balanceDisplay1"></div>
 
     <div class="popup-content">
         <img id="scooter-image" style="" src="" alt="Картинка самоката">
@@ -38,14 +38,7 @@
             <button id="rent-btn" class="btn">Арендовать</button>
         </div>
     </div>
-        <script>
-            // Получаем значение параметра bonus из URL nnn
-            var urlParams = new URLSearchParams(window.location.search);
-            var bonus = urlParams.get('bonus');
 
-            // Отображаем значение бонусов на странице
-            document.getElementById('bonusDisplay').innerText =bonus;
-        </script>
 </div>
 <div id="overlay" class="overlay"></div>
 <div id="map-test" class="map"></div>
@@ -63,7 +56,7 @@
         </div>
         <div class="menu-box-element">
             <a class="menu-item" href="#">Баланс</a>
-            <span class="menu-item">999 ₽</span>
+            <span id="balanceDisplay" class="menu-item">99912323 ₽</span>
             <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 36 36" fill="none">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.46759 9.00577H32.338C34.3142 9.00577 35.9311 10.6227 35.9311 12.5989V32.361C35.9311 34.3372 34.3142 35.9541 32.338 35.9541H3.59311C1.6169 35.9541 0 34.3372 0 32.361V8.46681C0 6.67025 1.25759 5.23301 3.05414 4.8737L30.1821 0.0230059C31.26 -0.156649 32.338 0.741627 32.338 1.81956V4.51439L3.59311 7.20922C3.59311 7.92784 4.31173 9.00577 6.46759 9.00577ZM26.9483 22.4799C26.9483 23.9172 28.2059 25.1748 29.6431 25.1748C31.0803 25.1748 32.3379 23.9172 32.3379 22.4799C32.3379 21.0427 31.0803 19.7851 29.6431 19.7851C28.2059 19.7851 26.9483 21.0427 26.9483 22.4799Z" fill="#3282FA" />
             </svg>

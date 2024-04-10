@@ -141,7 +141,14 @@ function init() {
 
 
 }
-
+window.onload = function () {
+    var balance = localStorage.getItem('balance');
+    if (balance !== null) {
+        // Выводим баланс на странице Home
+        document.getElementById('balanceDisplay').innerText = balance + "₽";
+        document.getElementById('balanceDisplay1').innerText = balance + "₽";
+    }
+};
 ymaps.ready(init);
 
 
