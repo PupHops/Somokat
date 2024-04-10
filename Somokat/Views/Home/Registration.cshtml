@@ -1,6 +1,6 @@
 ﻿@{
 
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Registration";
 
 
 
@@ -11,11 +11,14 @@
 
 <div class="full-screen-div">
     <div class="containerrr">
-        <h2>Login</h2>
-        <input id="inputPhone" value="+7(___)___-__-__"/>
+        <h2>Логин</h2>
+        <input id="inputPhone" value="+7(___)___-__-__" />
+        <h2>Пароль</h2>
         <input type="password" id="inputPassword" />
-        <input class="button" type="submit" onclick="loginUser()" value="Отправить" />
-        <a href="https://localhost:7099/Home/Registration">Нету аккаунта?</a>
+        <h2>Повторите пароль</h2>
+        <input type="password" id="inputPasswordReapet" />
+
+        <input class="button" type="submit" onclick="RegUser()" value="Зарегестрироваться" />
     </div>
 </div>
 <script>
@@ -40,52 +43,56 @@
     }
 </script>
 <script>
-
-    window.onload = function () {
-        var phoneNumber = localStorage.getItem('phoneNumber');
-
-        console.log(phoneNumber);
-        if (phoneNumber != null) {
-            window.location.href = 'https://localhost:7099/Home/';
-        } console.log(phoneNumber);
-
-
-    };
-
-    function loginUser() {
+    function RegUser() {
         var password = document.getElementById("inputPassword").value;
+        var password2 = document.getElementById("inputPasswordReapet").value;
         var phoneNumber = document.getElementById("inputPhone").value;
         phoneNumber = phoneNumber.replace(/\D/g, '');
+
+        if (phoneNumber.trim() === '' || password.trim() === '') {
+            alert('Пожалуйста, заполните все поля');
+            return;
+        }
+
+        // Проверка на правильную заполненность номера телефона (формат 10 цифр)
+        if (password!=password2) { 
+            alert('Пароли не совпадают');
+            return;
+
+        }
+
+        console.log(phoneNumber);
+        if (phoneNumber.length!=11) {
+
+            alert('Пожалуйста, введите корректный номер телефона');
+            return;
+        }
+
+
         var data = {
             phoneNumber, password
         };
         console.log(data);
 
         $.ajax({
-            url: 'https://localhost:7209/Authorization/login',
+            url: 'https://localhost:7209/Authorization/Registration',
             method: 'POST',
             contentType: 'application/json', // Установка заголовка Content-Type
             data: JSON.stringify(data),
             success: function (response, textStatus, xhr) {
-                localStorage.setItem('phoneNumber', phoneNumber);
-
-                console.log('Бонус: ' + response.bonus);
-                console.log(response);
+                console.log(response + "    " + xhr.status);
                 // Переход на другую страницу при статусе 200
                 if (xhr.status === 200) {
-
-                    localStorage.setItem('balance', JSON.stringify(response.bonus));
-                    localStorage.setItem('userId', JSON.stringify(response.id));
-                   window.location.href = 'https://localhost:7099/Home/';
+                    window.location.href = 'https://localhost:7099/Home/Login';
                 } else {
                     alert('Error: ' + xhr.status);
                 }
             },
             error: function () {
-                alert('Пользователь не найден.');
+                alert('Аккаунт уже существует');
             }
         });
 
-       
+
     }
 </script>

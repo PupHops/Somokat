@@ -36,6 +36,7 @@ public partial class SomokatContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
         modelBuilder.Entity<ChargingStation>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("charging_station_pkey");

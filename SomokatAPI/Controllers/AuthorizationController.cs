@@ -9,6 +9,16 @@ namespace SomokatAPI.Controllers
     public class AuthRequestBody
     {
         public string PhoneNumber { get; set; }
+        public string Password { get; set; }
+
+
+    }
+
+    public class RegRequestBody
+    {
+        public string PhoneNumber { get; set; }
+        public string Password { get; set; }
+
 
     }
     public class CheckRequestBody
@@ -46,7 +56,7 @@ namespace SomokatAPI.Controllers
             using (var dbContext = new SomokatContext())
             {
                 // Поиск пользователя по номеру телефона
-                UserAccount authUser = dbContext.UserAccounts.FirstOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber);
+                UserAccount authUser = dbContext.UserAccounts.FirstOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber && u.Password == requestBody.Password);
 
                 if (authUser == null)
                 {
@@ -60,7 +70,30 @@ namespace SomokatAPI.Controllers
             }
         }
 
+        [HttpPost("Registration")]
+        public IActionResult Registration([FromBody] RegRequestBody requestBody)
+        {
+            using (var dbContext = new SomokatContext())
+            {
+                // Поиск пользователя по номеру телефона
+                UserAccount authUser = dbContext.UserAccounts.FirstOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber);
 
+                int maxid = dbContext.UserAccounts.Max(u=>u.Id);
+
+                if (authUser != null)
+                {
+                    return StatusCode(401, "Пользователь уже существует");
+                }
+                UserAccount userAccount = new UserAccount();
+                userAccount.Id = maxid+1;
+                userAccount.PhoneNumber=requestBody.PhoneNumber;
+                userAccount.Password = requestBody.Password;
+                userAccount.Bonus = 1000;
+                dbContext.UserAccounts.Add(userAccount);
+                dbContext.SaveChanges();
+                return StatusCode(200);
+            }
+        }
 
     }
 }
