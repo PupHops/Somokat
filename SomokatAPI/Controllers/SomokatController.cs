@@ -9,6 +9,13 @@ namespace SomokatAPI.Controllers
     [Route("[controller]")]
     public class SomokatController : Controller
     {
+
+        [HttpPost("Rent")]
+        public IActionResult RentScooter(int id)
+        {
+            return null;
+        }
+
         [HttpGet]
         public IActionResult GetJsonData()
         {

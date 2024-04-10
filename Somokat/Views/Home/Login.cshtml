@@ -5,36 +5,39 @@
    
     
 }
-<h2>Login</h2>
-<form method="post">
-    <input id="inputPhone" value="+7(___)___-__-__">
-    <script>
-        let inputPhone = document.getElementById("inputPhone");
-        inputPhone.oninput = () => phoneMask(inputPhone)
-        function phoneMask(inputEl) {
-            let patStringArr = "+7(___)___-__-__".split('');
-            let arrPush = [3, 4, 5, 7, 8, 9, 11, 12, 14, 15]
-            let val = inputEl.value;
-            let arr = val.replace(/\D+/g, "").split('').splice(1);
-            let n;
-            let ni;
-            arr.forEach((s, i) => {
-                n = arrPush[i];
-                patStringArr[n] = s
-                ni = i
-            });
-            arr.length < 10 ? inputEl.style.color = 'red' : inputEl.style.color = 'green';
-            inputEl.value = patStringArr.join('');
-            n ? inputEl.setSelectionRange(n + 1, n + 1) : inputEl.setSelectionRange(17, 17)
-        }
-    </script>
-    <input type="submit" value="Отправить" />
-</form>
-<input id="phoneNumber" value="9772777481">
+<head>
+    <link rel="stylesheet" href="~/css/Style.css" />
+</head>
 
-<button onclick="loginUser()">Войти</button>
-
+<div class="full-screen-div">
+    <div class="containerrr">
+        <h2>Login</h2>
+        <input id="inputPhone" value="+7(___)___-__-__">
+        <input class="buton" type="submit" onclick="loginUser()" value="Отправить" />
+    </div>
+</div>
 <script>
+    let inputPhone = document.getElementById("inputPhone");
+    inputPhone.oninput = () => phoneMask(inputPhone)
+    function phoneMask(inputEl) {
+        let patStringArr = "+7(___)___-__-__".split('');
+        let arrPush = [3, 4, 5, 7, 8, 9, 11, 12, 14, 15]
+        let val = inputEl.value;
+        let arr = val.replace(/\D+/g, "").split('').splice(1);
+        let n;
+        let ni;
+        arr.forEach((s, i) => {
+            n = arrPush[i];
+            patStringArr[n] = s
+            ni = i
+        });
+        arr.length < 10 ? inputEl.style.color = 'red' : inputEl.style.color = 'green';
+        inputEl.value = patStringArr.join('');
+        n ? inputEl.setSelectionRange(n + 1, n + 1) : inputEl.setSelectionRange(17, 17)
+    }
+</script>
+<script>
+    
     function loginUser() {
         var phoneNumber = document.getElementById("phoneNumber").value;
 
@@ -48,9 +51,15 @@
             url: 'https://localhost:7209/Authorization/login',
             contentType: 'application/json',
             data: JSON.stringify(data),
-            success: function (result) {
-                window.location.href = 'https://localhost:7099/Home/Index';
-
+            success: function (response, textStatus, xhr) {
+                console.log('Бонус: ' + response.bonus);
+    
+                // Переход на другую страницу при статусе 200
+                if (xhr.status === 200) {
+                    window.location.href = 'https://localhost:7099/Home/?bonus=' + response.bonus;
+                } else {
+                    alert('Error: ' + xhr.status);
+                }
             },
             error: function () {
                 alert('Произошла ошибка при отправке запроса');
