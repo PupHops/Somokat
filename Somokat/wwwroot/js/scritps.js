@@ -26,6 +26,47 @@ function error(err) {
 
 navigator.geolocation.getCurrentPosition(success, error, options);
 
+
+// Создаем подложку для блокировки пространства за всплывающим окном
+var overlayElement = $('<div id="overlay"></div>')
+    .css({
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        background: 'rgba(0, 0, 0, 0.5)', // Полупрозрачный цвет
+        zIndex: 9998, // Устанавливаем z-index, чтобы подложка была ниже всплывающего окна
+        display: 'none'
+    })
+    .appendTo('body');
+
+
+
+// Функция для показа всплывающего окна
+function showPopup() {
+    $('#popup').fadeIn();
+    $('#overlay').fadeIn();
+}
+
+// Функция для скрытия всплывающего окна
+function hidePopup() {
+    console.log('hui');
+    $('#popup').fadeOut();
+    $('#overlay').fadeOut();
+}
+
+// Обработчик клика на подложку для закрытия всплывающего окна
+$('#overlay').click(function () {
+    console.log('hui');
+
+    hidePopup();
+});
+
+$(document).on('click', '#overlay', function () {
+    hidePopup();
+});
+
 function init() {
     var geolocation = ymaps.geolocation;
     let map = new ymaps.Map('map-test', {
@@ -46,6 +87,7 @@ function init() {
             });
         geoObjects.setOptions({
             openBalloonOnClick: false,
+            hasBalloon: false,
             iconLayout: 'default#image',
             iconImageHref: 'https://localhost:7099/images/scooter.svg',
             iconImageSize: [60, 67],
@@ -53,14 +95,19 @@ function init() {
         });
         geoObjects.each(function (geoObject) {
             geoObject.events.add('click', function (e) {
-                // Получение содержимого балуна
                 var balloonContent = geoObject.properties.get('balloonContent');
-                map.panTo(geoObject.geometry.getCoordinates(), {
-                    flying: true
-                });
+                var contentParts = balloonContent.split(';');
+                var chargeLevel = contentParts[0];
+                var deviceState = contentParts[1];
+                var scooterName = "AbobaScooter"; // Замените на реальное название самоката
+                var scooterNumber = deviceState; // Замените на реальный номер самоката
+                var imageUrl = 'https://localhost:7099//images/Samokat.png'; // Замените на реальный URL картинки
+                $('#scooter-image').attr('src', imageUrl);
+                $('#scooter-name').text(scooterName);
+                $('#charge-progress').attr('value', chargeLevel);
 
-                // Обновление содержимого всплывающего окна на вашем сайте
-              //  updatePopupContent(balloonContent);
+                showPopup();
+
             });
         });
     }).fail(function (jqxhr, textStatus, error) {
@@ -76,9 +123,7 @@ function init() {
             provider: 'browser',
             mapStateAutoApply: true
         }).then(function (result) {
-            // Синим цветом пометим положение, полученное через браузер.
-            // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
-
+            
             result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
             map.geoObjects.remove(result.geoObjects);
             map.geoObjects.add(result.geoObjects);

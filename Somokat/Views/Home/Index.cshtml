@@ -8,28 +8,54 @@
 
 
 
-    if(true){
+    if (true)
+    {
+    }
+
+
+
+
+
+
 }
-
-
-
-   
-    
-
-}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=f3071c7e-23dc-482b-a363-27489898cb71&lang=ru_RU"></script>
+<script src="~/js/scritps.js"></script>
 <head>
     <link rel="stylesheet" href="~/css/Style.css" />
 </head>
+<div id="popup" class="popup">
+    <div id="bonusDisplay"></div>
 
+    <div class="popup-content">
+        <img id="scooter-image" style="" src="" alt="Картинка самоката">
+        <progress id="charge-progress" style="" value="0" max="100"></progress>
+        <div style="">
+            <h2 id="scooter-name"></h2>
+        </div>
+        <div style="">
+            <button id="reserve-btn" class="btn">Забронировать</button>
+            <button id="rent-btn" class="btn">Арендовать</button>
+        </div>
+    </div>
+        <script>
+            // Получаем значение параметра bonus из URL nnn
+            var urlParams = new URLSearchParams(window.location.search);
+            var bonus = urlParams.get('bonus');
+
+            // Отображаем значение бонусов на странице
+            document.getElementById('bonusDisplay').innerText =bonus;
+        </script>
+</div>
+<div id="overlay" class="overlay"></div>
 <div id="map-test" class="map"></div>
-<script src="https://api-maps.yandex.ru/2.1/?apikey=f3071c7e-23dc-482b-a363-27489898cb71&lang=ru_RU"></script>
-<script src="~/js/scritps.js"></script>
+
 <div class="burger-menu">
     <input id="menu-toggle" type="checkbox" />
     <label class="menu-btn" for="menu-toggle">
         <span></span>
     </label>
-    <input class="menu-centerrrrr" id="geo" type="button"/>
+    <input class="menu-centerrrrr" id="geo" type="button" />
     <div class="menubox">
         <div class="menu-box-element">
             <a class="menu-item">Профиль</a>
