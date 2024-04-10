@@ -2,8 +2,8 @@
 
     ViewBag.Title = "Login";
 
-   
-    
+
+
 }
 <head>
     <link rel="stylesheet" href="~/css/Style.css" />
@@ -37,19 +37,18 @@
     }
 </script>
 <script>
-    
     function loginUser() {
-        var phoneNumber = document.getElementById("phoneNumber").value;
-
-
+        var phoneNumber = document.getElementById("inputPhone").value;
+        phoneNumber = phoneNumber.replace(/\D/g, '');
         var data = {
             phoneNumber
         };
+        console.log(data);
 
         $.ajax({
-            type: 'POST',
             url: 'https://localhost:7209/Authorization/login',
-            contentType: 'application/json',
+            method: 'POST',
+            contentType: 'application/json', // Установка заголовка Content-Type
             data: JSON.stringify(data),
             success: function (response, textStatus, xhr) {
                 console.log('Бонус: ' + response.bonus);
@@ -62,7 +61,7 @@
                 }
             },
             error: function () {
-                alert('Произошла ошибка при отправке запроса');
+                alert('Пользователь не найден.');
             }
         });
     }

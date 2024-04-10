@@ -31,7 +31,7 @@ public partial class SomokatContext : DbContext
     public virtual DbSet<UserAccount> UserAccounts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Host=hnt8.ru;Port=5432;Database=somokat;Username=admin;Password=admin");
+        => optionsBuilder.UseNpgsql("Host=hnt8.ru;Port=5432;Database=somokat;Username=postgres;Password=_RasulkotV2");
     
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
