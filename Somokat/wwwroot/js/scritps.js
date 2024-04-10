@@ -43,25 +43,20 @@ var overlayElement = $('<div id="overlay"></div>')
 
 
 
-// Функция для показа всплывающего окна
 function showPopup() {
     $('#popup').fadeIn();
     $('#overlay').fadeIn();
+
 }
 
-// Функция для скрытия всплывающего окна
 function hidePopup() {
-    console.log('hui');
     $('#popup').fadeOut();
     $('#overlay').fadeOut();
+    localStorage.setItem('isOpen', 0);
+
 }
 
-// Обработчик клика на подложку для закрытия всплывающего окна
-$('#overlay').click(function () {
-    console.log('hui');
 
-    hidePopup();
-});
 
 $(document).on('click', '#overlay', function () {
     hidePopup();
@@ -95,16 +90,28 @@ function init() {
         });
         geoObjects.each(function (geoObject) {
             geoObject.events.add('click', function (e) {
+
+
                 var balloonContent = geoObject.properties.get('balloonContent');
                 var contentParts = balloonContent.split(';');
                 var chargeLevel = contentParts[0];
                 var deviceState = contentParts[1];
-                var scooterName = "AbobaScooter"; // Замените на реальное название самоката
-                var scooterNumber = deviceState; // Замените на реальный номер самоката
-                var imageUrl = 'https://localhost:7099//images/Samokat.png'; // Замените на реальный URL картинки
-                $('#scooter-image').attr('src', imageUrl);
-                $('#scooter-name').text(scooterName);
-                $('#charge-progress').attr('value', chargeLevel);
+                var scooterName = "AbobaScooter"; 
+                var scooterNumber = geoObject.properties.get('hintContent'); 
+                var imageUrl = 'https://localhost:7099//images/Samokat.png'; 
+                localStorage.setItem('chargeLevel', contentParts[0]);
+                localStorage.setItem('scooterName', scooterName);
+                localStorage.setItem('imageUrl', imageUrl);
+
+                var phoneNumber = localStorage.getItem('phoneNumber');
+
+
+                $('#scooter-image').attr('src', localStorage.getItem('imageUrl'));
+                $('#scooter-name').text(localStorage.getItem('scooterName'));
+                $('#charge-progress').attr('value', localStorage.getItem('chargeLevel'));
+                localStorage.setItem('isOpen', 1);
+
+                localStorage.setItem('targetScooter', contentParts[2]);
 
                 showPopup();
 
@@ -123,7 +130,7 @@ function init() {
             provider: 'browser',
             mapStateAutoApply: true
         }).then(function (result) {
-            
+
             result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
             map.geoObjects.remove(result.geoObjects);
             map.geoObjects.add(result.geoObjects);
@@ -141,14 +148,141 @@ function init() {
 
 
 }
+
 window.onload = function () {
+
     var balance = localStorage.getItem('balance');
+    var phoneNumber = localStorage.getItem('phoneNumber');
+
+    if (localStorage.getItem('isOpen') == 1) {
+        $('#scooter-image').attr('src', localStorage.getItem('imageUrl'));
+        $('#scooter-name').text(localStorage.getItem('scooterName'));
+        $('#charge-progress').attr('value', localStorage.getItem('chargeLevel'));
+
+        showPopup();
+    }
+    if (localStorage.getItem('isOpen') == 2) {
+        $('#scooter-image').attr('src', localStorage.getItem('imageUrl'));
+        $('#scooter-name').text(localStorage.getItem('scooterName'));
+        $('#charge-progress').attr('value', localStorage.getItem('chargeLevel'));
+        showPopup();
+
+        document.getElementById("rentButton").style.display = "none";
+        document.getElementById("endTripButton").style.display = "flex";
+        document.getElementById("overlay2").style.display = "block";
+
+    }
+  
+
     if (balance !== null) {
         // Выводим баланс на странице Home
         document.getElementById('balanceDisplay').innerText = balance + "₽";
         document.getElementById('balanceDisplay1').innerText = balance + "₽";
+        document.getElementById('MenuPhoneNumber').innerText = "+ "+ phoneNumber;
     }
 };
+
+
+
+$(document).on('click', '#rentButton', function () {
+    var balance = localStorage.getItem('balance');
+    if (balance > 0) {
+        rentScooter();
+    } else {
+        alert("Недостаточно средств на счету!");
+
+    }
+});
+function startTimer() {
+    let seconds = 0;
+
+    function tick() {
+        
+        seconds++;
+        var userId = localStorage.getItem('userId');
+
+        var data = {
+            userId
+        };
+
+        $.ajax({
+            url: 'https://localhost:7209/Authorization/CheckMoney',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response, textStatus, xhr) {
+
+                if (xhr.status === 200) {
+
+                    localStorage.setItem('balance', JSON.stringify(response.bonus));
+                    var balance = localStorage.getItem('balance');
+                    document.getElementById('balanceDisplay').innerText = balance + "₽";
+                    document.getElementById('balanceDisplay1').innerText = balance + "₽";
+
+                }
+            },
+
+        });
+    }
+
+    setInterval(tick, 1000);
+}
+
+startTimer();
+$(document).on('click', '#endTripButton', function () {
+    endTrip();
+    localStorage.setItem('isOpen', 1);
+
+    console.log('Кончаем')
+});
+
+
+
+
+function rentScooter() {
+    $.ajax({
+        url: 'https://localhost:7209/Somokat/Rent',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            userId: localStorage.getItem('userId'),
+            targetScooter: localStorage.getItem('targetScooter')
+        }),
+        success: function (response) {
+            document.getElementById("rentButton").style.display = "none";
+            document.getElementById("endTripButton").style.display = "inline";
+            document.getElementById("overlay2").style.display = "block";
+            localStorage.setItem('isOpen', 2);
+            console.log('поездка закончилась')
+        },
+        error: function () {
+            alert('Ошибка аренды самоката.');
+        }
+    });
+}
+
+function endTrip() {
+    console.log('Точно Кончаем')
+
+    $.ajax({
+        url: 'https://localhost:7209/Somokat/EndTrip',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            userId: localStorage.getItem('userId'),
+            targetScooter: localStorage.getItem('targetScooter')
+        }), success: function (response) {
+            document.getElementById("rentButton").style.display = "flex";
+            document.getElementById("endTripButton").style.display = "none";
+            document.getElementById("overlay2").style.display = "none";
+
+        },
+        error: function () {
+            alert('Ошибка завершения поездки.');
+        }
+    });
+}
+
 ymaps.ready(init);
 
 

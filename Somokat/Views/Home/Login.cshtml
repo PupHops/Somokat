@@ -13,10 +13,12 @@
     <div class="containerrr">
         <h2>Login</h2>
         <input id="inputPhone" value="+7(___)___-__-__">
-        <input class="buton" type="submit" onclick="loginUser()" value="Отправить" />
+        <input class="button" type="submit" onclick="loginUser()" value="Отправить" />
+        <input type="password"  id="inputPassword" />
     </div>
 </div>
 <script>
+
     let inputPhone = document.getElementById("inputPhone");
     inputPhone.oninput = () => phoneMask(inputPhone)
     function phoneMask(inputEl) {
@@ -37,6 +39,18 @@
     }
 </script>
 <script>
+
+    window.onload = function () {
+        var phoneNumber = localStorage.getItem('phoneNumber');
+
+        console.log(phoneNumber);
+        if (phoneNumber != null) {
+            window.location.href = 'https://localhost:7099/Home/';
+        } console.log(phoneNumber);
+
+
+    };
+
     function loginUser() {
         var phoneNumber = document.getElementById("inputPhone").value;
         phoneNumber = phoneNumber.replace(/\D/g, '');
@@ -44,6 +58,7 @@
             phoneNumber
         };
         console.log(data);
+        localStorage.setItem('phoneNumber', phoneNumber);
 
         $.ajax({
             url: 'https://localhost:7209/Authorization/login',
@@ -52,13 +67,13 @@
             data: JSON.stringify(data),
             success: function (response, textStatus, xhr) {
                 console.log('Бонус: ' + response.bonus);
-
+                console.log(response);
                 // Переход на другую страницу при статусе 200
                 if (xhr.status === 200) {
 
                     localStorage.setItem('balance', JSON.stringify(response.bonus));
-
-                    window.location.href = 'https://localhost:7099/Home/';
+                    localStorage.setItem('userId', JSON.stringify(response.id));
+                   window.location.href = 'https://localhost:7099/Home/';
                 } else {
                     alert('Error: ' + xhr.status);
                 }
