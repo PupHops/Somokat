@@ -144,7 +144,7 @@ function init() {
     map.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
     map.controls.remove('zoomControl'); // удаляем контрол зуммирования
     map.controls.remove('rulerControl'); // удаляем контрол правил
-
+    map.controls.remove('geolocationControl'); // удаляем контрол правил
 
 
 }
