@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Somokat;
 using System.Threading.Tasks;
 using System.Linq;
-
+using System.Drawing;
+using NpgsqlTypes;
+using System;
+using Npgsql;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 namespace SomokatAPI.Controllers
 {
 
@@ -14,22 +18,30 @@ namespace SomokatAPI.Controllers
 
     public class ScooterRent
     {
-        public int userId {  get; set; }
+        public int userId { get; set; }
         public int targetScooter { get; set; }
 
     }
 
-  
+ 
+
 
     [ApiController]
     [Route("[controller]")]
     public class SomokatController : Controller
     {
-      
-       
+ 
 
-      
-      
+        [HttpPost("NearestScooter")]
+        public async Task<IActionResult> FindNearestScooter(double x, double y)
+        {
+            var dbContext = new SomokatContext();
+
+            var users = dbContext.Scooters.FromSqlRaw($"SELECT * FROM scooter ORDER BY location <-> point({x}, {y}) LIMIT 1");
+
+            return StatusCode(200, new { users});
+        }
+
 
 
         [HttpPost("Rent")]
@@ -38,7 +50,7 @@ namespace SomokatAPI.Controllers
             var dbContext = new SomokatContext();
 
             int idScooter = Convert.ToInt32(requestBody.targetScooter);
-            
+
             var scooter = await dbContext.Scooters.FindAsync(idScooter);
 
             if (scooter == null)
@@ -46,7 +58,7 @@ namespace SomokatAPI.Controllers
                 return NotFound();
             }
 
-            scooter.IdStatus = 4; // Устанавливаем статус "Арендован"
+            scooter.IdStatus = 4; 
 
             await dbContext.SaveChangesAsync();
             Task.Run(() => DeductBalancePeriodically(requestBody));
@@ -57,22 +69,21 @@ namespace SomokatAPI.Controllers
 
         private async Task DeductBalancePeriodically(ScooterRent requestBody)
         {
-           
+
 
             while (true)
             {
-                await Task.Delay(TimeSpan.FromMinutes(0.25)); // Ждем 1 минуту
+                await Task.Delay(TimeSpan.FromMinutes(0.25));
                 SomokatContext _context = new SomokatContext();
 
                 var user = await _context.UserAccounts.FindAsync(requestBody.userId);
-                // Проверяем, что самокат все еще арендуется
                 var scooter = await _context.Scooters.FindAsync(requestBody.targetScooter);
                 if (scooter.IdStatus != 4)
                 {
                     return;
                 }
 
-                user.Bonus -= 1; // Уменьшаем баланс пользователя
+                user.Bonus -= 1;
                 await _context.SaveChangesAsync();
             }
         }
@@ -89,7 +100,7 @@ namespace SomokatAPI.Controllers
                 return NotFound();
             }
 
-            scooter.IdStatus = 1; // Устанавливаем статус "Доступен"
+            scooter.IdStatus = 1; 
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -102,10 +113,8 @@ namespace SomokatAPI.Controllers
             string jsonResult = null;
             using (var dbContext = new SomokatContext())
             {
-                // Получение списка скутеров из базы данных
                 List<Scooter> scooters = dbContext.Scooters.Where(s => s.IdStatus == 1).ToList();
 
-                // Преобразование в JSON формат
                 jsonResult = ConvertToGeoJson(scooters);
             }
             static string ConvertToGeoJson(List<Scooter> scooters)

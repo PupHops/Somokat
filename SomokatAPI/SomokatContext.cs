@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 using Somokat;
+
+
+using SomokatAPI.Controllers;
 namespace SomokatAPI;
 
 public partial class SomokatContext : DbContext
@@ -36,7 +39,8 @@ public partial class SomokatContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+
+
         modelBuilder.Entity<ChargingStation>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("charging_station_pkey");
