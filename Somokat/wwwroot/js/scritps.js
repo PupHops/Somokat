@@ -112,7 +112,6 @@ function init() {
                 localStorage.setItem('isOpen', 1);
 
                 localStorage.setItem('targetScooter', contentParts[2]);
-
                 showPopup();
 
             });
@@ -127,13 +126,17 @@ function init() {
 
     a.onclick = function () {
         geolocation.get({
-            provider: 'browser',
-            mapStateAutoApply: true
+            provider: 'auto',
+            mapStateAutoApply: false
         }).then(function (result) {
 
             result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
             map.geoObjects.remove(result.geoObjects);
             map.geoObjects.add(result.geoObjects);
+            var coordinates = result.geoObjects.get(0).geometry.getCoordinates();
+            console.log(coordinates);
+            map.setCenter(coordinates, 17); 
+
         });
     }
 
@@ -144,6 +147,7 @@ function init() {
     map.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
     map.controls.remove('zoomControl'); // удаляем контрол зуммирования
     map.controls.remove('rulerControl'); // удаляем контрол правил
+    map.controls.remove('geolocationControl'); // удаляем контрол правил
 
 
 
@@ -158,6 +162,7 @@ window.onload = function () {
         $('#scooter-image').attr('src', localStorage.getItem('imageUrl'));
         $('#scooter-name').text(localStorage.getItem('scooterName'));
         $('#charge-progress').attr('value', localStorage.getItem('chargeLevel'));
+
 
         showPopup();
     }
