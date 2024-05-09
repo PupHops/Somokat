@@ -28,6 +28,10 @@ namespace Somokat.Controllers
         {
             return View();
         }
+        public IActionResult pay()
+        {
+            return View();
+        }
         public IActionResult Registration()
         {
             return View();

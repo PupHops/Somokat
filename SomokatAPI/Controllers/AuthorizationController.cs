@@ -50,7 +50,7 @@ namespace SomokatAPI.Controllers
         {
             if (string.IsNullOrWhiteSpace(requestBody?.PhoneNumber))
             {
-                return BadRequest("Phone number cannot be empty.");
+                return BadRequest("Телефон не должен быть пустым");
             }
 
             using (var dbContext = new SomokatContext())
@@ -60,7 +60,7 @@ namespace SomokatAPI.Controllers
 
                 if (authUser == null)
                 {
-                    return StatusCode(401, "Unauthorized: User not found");
+                    return StatusCode(401, "Пользователь не найден");
                 }
 
                 // Ваша логика проверки пароля или других параметров, если необходимо
