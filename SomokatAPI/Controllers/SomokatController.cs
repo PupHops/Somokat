@@ -22,8 +22,15 @@ namespace SomokatAPI.Controllers
         public int targetScooter { get; set; }
 
     }
+    public class UserPay
+    {
+        public int userId { get; set; }
+        public int ValuePay { get; set; }
 
- 
+    }
+
+
+
 
 
     [ApiController]
@@ -106,6 +113,17 @@ namespace SomokatAPI.Controllers
             return NoContent();
         }
 
+        [HttpPost("Pay")]
+        public async Task<IActionResult> Pay([FromBody] UserPay requestBody)
+        {
+            SomokatContext _context = new SomokatContext();
+
+            var user = await _context.UserAccounts.FindAsync(requestBody.userId);
+            var value = requestBody.ValuePay;
+            user.Bonus += value;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
 
         [HttpGet]
         public IActionResult GetJsonData()

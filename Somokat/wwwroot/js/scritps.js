@@ -244,6 +244,8 @@ $(document).on('click', '#endTripButton', function () {
 
 
 
+
+
 function rentScooter() {
     $.ajax({
         url: 'https://localhost:7209/Somokat/Rent',
@@ -267,13 +269,13 @@ function rentScooter() {
 }
 
 function endTrip() {
-    console.log('Точно Кончаем')
 
     $.ajax({
         url: 'https://localhost:7209/Somokat/EndTrip',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
+
             userId: localStorage.getItem('userId'),
             targetScooter: localStorage.getItem('targetScooter')
         }), success: function (response) {

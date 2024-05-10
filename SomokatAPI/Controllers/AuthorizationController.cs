@@ -55,7 +55,6 @@ namespace SomokatAPI.Controllers
 
             using (var dbContext = new SomokatContext())
             {
-                // Поиск пользователя по номеру телефона
                 UserAccount authUser = dbContext.UserAccounts.FirstOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber && u.Password == requestBody.Password);
 
                 if (authUser == null)
@@ -63,9 +62,7 @@ namespace SomokatAPI.Controllers
                     return StatusCode(401, "Пользователь не найден");
                 }
 
-                // Ваша логика проверки пароля или других параметров, если необходимо
-
-                // Возвращаем код 200 и количество бонусов пользователя
+  
                 return StatusCode(200, new { authUser.Bonus,authUser.Id });
             }
         }
@@ -75,7 +72,6 @@ namespace SomokatAPI.Controllers
         {
             using (var dbContext = new SomokatContext())
             {
-                // Поиск пользователя по номеру телефона
                 UserAccount authUser = dbContext.UserAccounts.FirstOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber);
 
                 int maxid = dbContext.UserAccounts.Max(u=>u.Id);
