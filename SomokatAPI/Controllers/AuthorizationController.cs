@@ -48,22 +48,28 @@ namespace SomokatAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] AuthRequestBody requestBody)
         {
-            if (string.IsNullOrWhiteSpace(requestBody?.PhoneNumber))
+            try
             {
-                return BadRequest("Телефон не должен быть пустым");
-            }
-
-            using (var dbContext = new SomokatContext())
-            {
-                UserAccount authUser = dbContext.UserAccounts.FirstOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber && u.Password == requestBody.Password);
-
-                if (authUser == null)
+                if (string.IsNullOrWhiteSpace(requestBody?.PhoneNumber))
                 {
-                    return StatusCode(401, "Пользователь не найден");
+                    return BadRequest("Телефон не должен быть пустым");
                 }
 
-  
-                return StatusCode(200, new { authUser.Bonus,authUser.Id });
+                using (var dbContext = new SomokatContext())
+                {
+                    UserAccount authUser = dbContext.UserAccounts.FirstOrDefault(u => u.PhoneNumber == requestBody.PhoneNumber && u.Password == requestBody.Password);
+
+                    if (authUser == null)
+                    {
+                        return StatusCode(401, "Пользователь не найден");
+                    }
+
+
+                    return StatusCode(200, new { authUser.Bonus, authUser.Id });
+                }
+            }
+            catch {
+                return StatusCode(401, "Пользователь не найден");
             }
         }
 
