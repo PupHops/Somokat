@@ -36,6 +36,10 @@ namespace Somokat.Controllers
         {
             return View();
         }
+        public IActionResult help()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
