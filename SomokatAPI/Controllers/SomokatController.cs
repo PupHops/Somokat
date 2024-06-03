@@ -20,6 +20,7 @@ namespace SomokatAPI.Controllers
     {
         public int userId { get; set; }
         public int targetScooter { get; set; }
+        public int orderId {  get; set; }
 
     }
     public class UserPay
@@ -65,13 +66,26 @@ namespace SomokatAPI.Controllers
                 return NotFound();
             }
 
-            scooter.IdStatus = 4; 
-
+            scooter.IdStatus = 4;
             await dbContext.SaveChangesAsync();
+
             Task.Run(() => DeductBalancePeriodically(requestBody));
 
+            using (var context = new SomokatContext())
+            {
+                var order = new Order
+                {
+                    UserId = requestBody.userId,
+                    ScooterId = requestBody.targetScooter,
+                    StartTime = DateTime.Now
+                };
 
-            return NoContent();
+                context.Orders.Add(order);
+                context.SaveChanges();
+
+                return CreatedAtAction(nameof(Rent), new { id = order.Id }, order);
+
+            }
         }
 
         private async Task DeductBalancePeriodically(ScooterRent requestBody)
@@ -107,8 +121,20 @@ namespace SomokatAPI.Controllers
                 return NotFound();
             }
 
-            scooter.IdStatus = 1; 
+            scooter.IdStatus = 1;
+            using (var context = new SomokatContext())
+            {
+                var order = context.Orders.Find(requestBody.orderId);
+                if (order != null)
+                {
+                    order.EndTime = DateTime.Now;
+                    order.OrderTime = order.StartTime.HasValue && order.EndTime.HasValue
+                        ? (DateTime?)DateTime.MinValue.Add(order.EndTime.Value - order.StartTime.Value)
+                        : (DateTime?)null;
 
+                    context.SaveChanges();
+                }
+            }
             await _context.SaveChangesAsync();
             return NoContent();
         }

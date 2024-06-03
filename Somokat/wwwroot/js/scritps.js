@@ -237,8 +237,9 @@ startTimer();
 $(document).on('click', '#endTripButton', function () {
     endTrip();
     localStorage.setItem('isOpen', 1);
+    document.getElementById('reviewModal').style.display = 'block';
 
-    console.log('Кончаем')
+    console.log('заканчиваем');
 });
 
 
@@ -260,7 +261,8 @@ function rentScooter() {
             document.getElementById("endTripButton").style.display = "inline";
             document.getElementById("overlay2").style.display = "block";
             localStorage.setItem('isOpen', 2);
-            console.log('поездка закончилась')
+            localStorage.setItem('orderId', response.id);
+            console.log('поездка началась, номер поездки'+response.id)
         },
         error: function () {
             alert('Ошибка аренды самоката.');
@@ -275,9 +277,10 @@ function endTrip() {
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-
             userId: localStorage.getItem('userId'),
-            targetScooter: localStorage.getItem('targetScooter')
+            targetScooter: localStorage.getItem('targetScooter'),
+            orderId: localStorage.getItem('orderId')
+
         }), success: function (response) {
             document.getElementById("rentButton").style.display = "flex";
             document.getElementById("endTripButton").style.display = "none";
