@@ -30,7 +30,12 @@ namespace SomokatAPI.Controllers
 
     }
 
-
+    public class SumbitComplaintBody
+    {
+        public string message { get; set; }
+        public int orderId { get; set; }
+        public int raiting { get; set; }
+    }
 
 
 
@@ -88,6 +93,24 @@ namespace SomokatAPI.Controllers
             }
         }
 
+        [HttpPost("Submit")]
+        public async Task<IActionResult> SubmitComplaint([FromBody] SumbitComplaintBody requestBody)
+        {
+          await  using (var context = new SomokatContext())
+            {
+                var complaint = new Complaint
+                {
+                    Message = requestBody.message,
+                    OrderId = requestBody.orderId,
+                    Time = DateTime.Now,
+                    Rating = requestBody.raiting
+                };
+                context.Complaints.Add(complaint);
+                context.SaveChanges();
+            }
+
+            return NoContent();
+        }
         private async Task DeductBalancePeriodically(ScooterRent requestBody)
         {
 

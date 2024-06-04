@@ -288,3 +288,205 @@
     visibility: visible;
     left: 0;
 }
+
+
+
+.raitninCode body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #11114e;
+    background: radial-gradient( circle at 50% 100%, #1d659f, #11114e);
+}
+
+.raitninCode body * {
+    box-sizing: border-box;
+}
+
+.raitninCode .rating-stars {
+    display: block;
+    width: 50vmin;
+    padding: 1.75vmin 10vmin 2vmin 3vmin;
+    background: linear-gradient(90deg, #ffffff90 40vmin, #fff0 40vmin 100%);
+    border-radius: 5vmin;
+    position: relative;
+}
+
+.raitninCode .rating-counter {
+    font-size: 5.5vmin;
+    font-family: Arial, Helvetica, serif;
+    color: #9aacc6;
+    width: 10vmin;
+    text-align: center;
+    background: #0006;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    border-radius: 0 5vmin 5vmin 0;
+    line-height: 10vmin;
+}
+
+.raitninCode .rating-counter:before {
+    content: "0";
+    transition: all 0.25s ease 0s;
+}
+
+
+
+.raitninCode input {
+    display: none;
+}
+
+.raitninCode label {
+    width: 5vmin;
+    height: 5vmin;
+    background: #000b;
+    display: inline-flex;
+    cursor: pointer;
+    margin: 0.5vmin 0.65vmin;
+    transition: all 1s ease 0s;
+    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
+}
+
+.raitninCode label[for=rs0] {
+    display: none;
+}
+
+.raitninCode label:before {
+    width: 90%;
+    height: 90%;
+    content: "";
+    background: orange;
+    z-index: -1;
+    display: block;
+    margin-left: 5%;
+    margin-top: 5%;
+    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
+    background: linear-gradient(90deg, yellow, orange 30% 50%, #184580 50%, 70%, #173a75 100%);
+    background-size: 205% 100%;
+    background-position: 0 0;
+}
+
+.raitninCode label:hover:before {
+    transition: all 0.25s ease 0s;
+}
+
+.raitninCode input:checked + label ~ label:before {
+    background-position: 100% 0;
+    transition: all 0.25s ease 0s;
+}
+
+.raitninCode input:checked + label ~ label:hover:before {
+    background-position: 0% 0
+}
+
+
+
+
+
+.raitninCode #rs1:checked ~ .rating-counter:before {
+    content: "1";
+}
+
+.raitninCode #rs2:checked ~ .rating-counter:before {
+    content: "2";
+}
+
+.raitninCode #rs3:checked ~ .rating-counter:before {
+    content: "3";
+}
+
+.raitninCode #rs4:checked ~ .rating-counter:before {
+    content: "4";
+}
+
+.raitninCode #rs5:checked ~ .rating-counter:before {
+    content: "5";
+}
+
+.raitninCode label + input:checked ~ .rating-counter:before {
+    color: #ffab00 !important;
+    transition: all 0.25s ease 0s;
+}
+
+
+
+
+
+.raitninCode label:hover ~ .rating-counter:before {
+    color: #9aacc6 !important;
+    transition: all 0.5s ease 0s;
+    animation: pulse 1s ease 0s infinite;
+}
+
+@keyframes pulse {
+    50% {
+        font-size: 6.25vmin;
+    }
+}
+
+.raitninCode label[for=rs1]:hover ~ .rating-counter:before {
+    content: "1" !important;
+}
+
+.raitninCode label[for=rs2]:hover ~ .rating-counter:before {
+    content: "2" !important;
+}
+
+.raitninCode label[for=rs3]:hover ~ .rating-counter:before {
+    content: "3" !important;
+}
+
+.raitninCode label[for=rs4]:hover ~ .rating-counter:before {
+    content: "4" !important;
+}
+
+.raitninCode label[for=rs5]:hover ~ .rating-counter:before {
+    content: "5" !important;
+}
+
+
+.raitninCode input:checked:hover ~ .rating-counter:before {
+    animation: none !important;
+    color: #ffab00 !important;
+}
+
+
+
+
+
+
+
+textarea {
+    margin-top: 10px;
+    margin-left: 50px;
+    width: 350px;
+    height: 100px;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+    border-image: none;
+    border-radius: 6px 6px 6px 6px;
+    border-style: none solid solid none;
+    border-width: medium 1px 1px medium;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+    color: #555555;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 1em;
+    line-height: 1.4em;
+    padding: 5px 8px;
+    transition: background-color 0.2s ease 0s;
+    
+}
+
+
+    textarea:focus {
+        background: none repeat scroll 0 0 #FFFFFF;
+        outline-width: 0;
+    }

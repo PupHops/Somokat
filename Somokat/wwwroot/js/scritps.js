@@ -186,7 +186,42 @@ window.onload = function () {
         document.getElementById('MenuPhoneNumber').innerText = "+ "+ phoneNumber;
     }
 };
+function getPseudoElementContent(element, pseudo) {
+    const style = window.getComputedStyle(element, pseudo);
+    return style.getPropertyValue('content').replace(/['"]/g, ''); // удаление кавычек
+}
 
+$(document).on('click', '#ComplaintButton', function () {
+
+    hidePopup();
+
+    const ratingCounter = document.querySelector('.rating-counter');
+    const content = getPseudoElementContent(ratingCounter, '::before');
+
+    var message = document.getElementById('message');
+    console.log(content);
+    $.ajax({
+        url: 'https://localhost:7209/Somokat/Submit',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            message: message.value,
+            orderId: localStorage.getItem('orderId'),
+            raiting: content,
+        }),
+        success: function (response) {
+ 
+            document.getElementById("overlay2").style.display = "none";
+            document.getElementById("reviewModal").style.display = "none";
+            document.getElementById("message").style.value = "";
+            console.log('ВСЁ');
+        },
+        error: function () {
+            alert('Ошибка.');
+        }
+    });
+
+});
 
 
 $(document).on('click', '#rentButton', function () {
@@ -238,6 +273,7 @@ $(document).on('click', '#endTripButton', function () {
     endTrip();
     localStorage.setItem('isOpen', 1);
     document.getElementById('reviewModal').style.display = 'block';
+    hidePopup();
 
     console.log('заканчиваем');
 });
@@ -284,7 +320,7 @@ function endTrip() {
         }), success: function (response) {
             document.getElementById("rentButton").style.display = "flex";
             document.getElementById("endTripButton").style.display = "none";
-            document.getElementById("overlay2").style.display = "none";
+         //   document.getElementById("overlay2").style.display = "none";
 
         },
         error: function () {

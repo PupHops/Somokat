@@ -49,22 +49,24 @@
 <div id="map-test" class="map"></div>
 
 
-<div id="reviewModal"  style="display:none;z-index: 9999;position:absolute">
-        <label for="message">Message:</label>
-        <input type="text" id="message" name="message" required><br>
-
-        <label for="imageLink">Image Link:</label>
-        <input type="text" id="imageLink" name="imageLink"><br>
-
-        <label for="complaint">Complaint:</label>
-        <input type="checkbox" id="complaint" name="complaint"><br>
-
-        <label for="rating">Rating:</label>
-        <input type="number" id="rating" name="rating" min="1" max="5" required><br>
-
-        <input type="hidden" id="orderId" name="orderId" value="1234">
-
-        <button type="submit">Submit Review</button>
+<div id="reviewModal" class="containerrr" style="display:none;z-index: 9999;position:absolute; margin: auto; top:0; bottom: 0;left: 0;right: 0; width:500px; height:500px;">
+@*         <input type="text" id="message" name="message" required><br>
+    *@    
+    <textarea placeholder="Оставьте свой отзыв" maxlength='120' rows="5" name="comment[text]" id="message" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+    <div class="raitninCode">
+        <div class="rating-stars">
+        <input type="radio" name="rating" id="rs0" checked><label for="rs0"></label>
+        <input type="radio" name="rating" id="rs1"><label for="rs1"></label>
+        <input type="radio" name="rating" id="rs2"><label for="rs2"></label>
+        <input type="radio" name="rating" id="rs3"><label for="rs3"></label>
+        <input type="radio" name="rating" id="rs4"><label for="rs4"></label>
+        <input type="radio" name="rating" id="rs5"><label for="rs5"></label>
+        <span class="rating-counter"></span>
+    </div>
+    </div>
+    <div style="">
+    <button type="submit" class="btn" style="background-color:aliceblue" id="ComplaintButton">Отправить</button>
+    </div>
 </div>
 
 
