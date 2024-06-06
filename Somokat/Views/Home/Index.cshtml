@@ -93,10 +93,16 @@
             </svg>
         </div>
         <div class="menu-box-element">
-            <a class="menu-item" href="#">Помощь</a>
+            <a class="menu-item" href="#" onclick="help()">Помощь</a>
             <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 34 56" fill="none">
                 <path d="M16.8974 0C11.0825 0 6.77264 1.82 4.03622 4.62C1.2998 7.42 0.342052 10.92 0 13.58L6.84105 14.49C7.11469 12.74 7.66197 10.99 8.96177 9.66C10.2616 8.33 12.3139 7 16.8974 7C21.4125 7 23.8753 8.12 25.2435 9.38C26.6117 10.64 27.159 12.18 27.159 14C27.159 19.81 24.833 21.42 21.4125 24.5C17.992 27.58 13.4769 32.06 13.4769 40.25V42H20.3179V40.25C20.3179 34.44 22.4386 32.83 25.8592 29.75C29.2797 26.67 34 22.19 34 14C34 10.64 32.837 6.86 29.9638 4.13C27.0221 1.4 22.6439 0 16.8974 0ZM13.4769 49V56H20.3179V49H13.4769Z" fill="#3282FA" />
             </svg>
+            <script>
+                function help() {
+                    window.location.href = 'https://localhost:7099/Home/help';
+
+                }
+            </script>
         </div>
 @*         <div class="menu-box-element">
             <a class="menu-item" href="#">История поездок</a>

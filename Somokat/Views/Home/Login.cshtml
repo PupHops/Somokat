@@ -77,7 +77,8 @@
                 // Переход на другую страницу при статусе 200
                 if (xhr.status === 200) {
 
-                    localStorage.setItem('balance', JSON.stringify(response.bonus));
+                    localStorage.setItem('balance', JSON.stringify(response.balance || 0));
+                    localStorage.setItem('Bonus', JSON.stringify(response.bonus || 0));
                     localStorage.setItem('userId', JSON.stringify(response.id));
                    window.location.href = 'https://localhost:7099/Home/';
                 } else {

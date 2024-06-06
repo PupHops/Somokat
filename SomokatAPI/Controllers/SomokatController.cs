@@ -117,7 +117,7 @@ namespace SomokatAPI.Controllers
 
             while (true)
             {
-                await Task.Delay(TimeSpan.FromMinutes(0.25));
+                await Task.Delay(TimeSpan.FromMinutes(0.05));
                 SomokatContext _context = new SomokatContext();
 
                 var user = await _context.UserAccounts.FindAsync(requestBody.userId);
@@ -127,7 +127,13 @@ namespace SomokatAPI.Controllers
                     return;
                 }
 
-                user.Bonus -= 1;
+
+                if (user.Bonus > 0 && user.Bonus !=0)
+                { user.Bonus--; }
+                else
+                {user.balance--;}
+
+                
                 await _context.SaveChangesAsync();
             }
         }
@@ -169,7 +175,16 @@ namespace SomokatAPI.Controllers
 
             var user = await _context.UserAccounts.FindAsync(requestBody.userId);
             var value = requestBody.ValuePay;
-            user.Bonus += value;
+            user.balance += value;
+            int bonusIncrease = (int)(value * 0.20);
+            if (user.Bonus==null)
+            {
+                user.Bonus = bonusIncrease;
+
+            }else
+            {
+                user.Bonus += bonusIncrease;
+            }
             await _context.SaveChangesAsync();
             return NoContent();
         }

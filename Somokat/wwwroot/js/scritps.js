@@ -156,6 +156,7 @@ function init() {
 window.onload = function () {
 
     var balance = localStorage.getItem('balance');
+    var bonus = localStorage.getItem('Bonus');
     var phoneNumber = localStorage.getItem('phoneNumber');
 
     if (localStorage.getItem('isOpen') == 1) {
@@ -180,9 +181,8 @@ window.onload = function () {
   
 
     if (balance !== null) {
-        // Выводим баланс на странице Home
-        document.getElementById('balanceDisplay').innerText = balance + "₽";
-        document.getElementById('balanceDisplay1').innerText = balance + "₽";
+        document.getElementById('balanceDisplay').innerText = balance + "₽" + " + " + bonus +" Бонусов";
+        document.getElementById('balanceDisplay1').innerText = balance + "₽" + " + " + bonus + " Бонусов";
         document.getElementById('MenuPhoneNumber').innerText = "+ "+ phoneNumber;
     }
 };
@@ -226,7 +226,9 @@ $(document).on('click', '#ComplaintButton', function () {
 
 $(document).on('click', '#rentButton', function () {
     var balance = localStorage.getItem('balance');
-    if (balance > 0) {
+    var bonus = localStorage.getItem('Bonus');
+
+    if (balance+bonus > 0) {
         rentScooter();
     } else {
         alert("Недостаточно средств на счету!");
@@ -253,16 +255,18 @@ function startTimer() {
             success: function (response, textStatus, xhr) {
 
                 if (xhr.status === 200) {
-
-                    localStorage.setItem('balance', JSON.stringify(response.bonus));
+                    localStorage.setItem('balance', JSON.stringify(response.balance || 0));
+                    localStorage.setItem('Bonus', JSON.stringify(response.bonus || 0));
                     var balance = localStorage.getItem('balance');
-                    document.getElementById('balanceDisplay').innerText = balance + "₽";
-                    document.getElementById('balanceDisplay1').innerText = balance + "₽";
+                    var bonus = localStorage.getItem('Bonus');
+                };
+                    document.getElementById('balanceDisplay').innerText = balance + "₽" + " + " + bonus + " Бонусов";
+                    document.getElementById('balanceDisplay1').innerText = balance + "₽" + " + " + bonus + " Бонусов";
 
                 }
             },
 
-        });
+        );
     }
 
     setInterval(tick, 1000);

@@ -38,11 +38,19 @@ namespace SomokatAPI.Controllers
         public IActionResult CheckMoney([FromBody] CheckRequestBody requestBody)
         {
             SomokatContext context= new SomokatContext();
+            try
+            {
+                UserAccount authUser = context.UserAccounts.FirstOrDefault(u => u.Id == requestBody.userId);
+                return StatusCode(200, new { authUser.balance, authUser.Bonus });
 
-            UserAccount authUser = context.UserAccounts.FirstOrDefault(u => u.Id == requestBody.userId);
+            }
+            catch
+            {
+                return NoContent();
+            }
 
 
-            return StatusCode(200, new { authUser.Bonus});
+
         }
 
         [HttpPost("login")]
@@ -63,9 +71,7 @@ namespace SomokatAPI.Controllers
                     {
                         return StatusCode(401, "Пользователь не найден");
                     }
-
-
-                    return StatusCode(200, new { authUser.Bonus, authUser.Id });
+                    return StatusCode(200, new { authUser.balance,authUser.Bonus, authUser.Id });
                 }
             }
             catch {
