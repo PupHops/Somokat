@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NpgsqlTypes;
 
-namespace Somokat;
+namespace SomokatAPI;
 
 public partial class LocationJournal
 {

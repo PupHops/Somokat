@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Somokat;
+namespace SomokatAPI;
 
 public partial class Status
 {

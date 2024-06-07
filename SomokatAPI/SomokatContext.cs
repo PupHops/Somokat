@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-using Somokat;
+using SomokatAPI;
 
 
 using SomokatAPI.Controllers;

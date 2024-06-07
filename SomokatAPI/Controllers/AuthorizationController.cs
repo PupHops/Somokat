@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using Somokat;
+using SomokatAPI;
 
 namespace SomokatAPI.Controllers
 {
@@ -13,7 +13,14 @@ namespace SomokatAPI.Controllers
 
 
     }
+    public class SaveNameRequestBody
+    {
+        public string PhoneNumber { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
 
+
+    }
     public class RegRequestBody
     {
         public string PhoneNumber { get; set; }
@@ -32,7 +39,6 @@ namespace SomokatAPI.Controllers
 
     public class AuthorizationController : Controller
     {
-
         [HttpPost("CheckMoney")]
 
         public IActionResult CheckMoney([FromBody] CheckRequestBody requestBody)
@@ -51,6 +57,19 @@ namespace SomokatAPI.Controllers
 
 
 
+        }
+        [HttpPost("SaveNameSurname")]
+        public async Task<IActionResult> SaveName([FromBody] SaveNameRequestBody requestBody)
+        {
+            SomokatContext context = new SomokatContext();
+            
+            var user =  await context.UserAccounts.FirstOrDefaultAsync(u => u.PhoneNumber == requestBody.PhoneNumber);
+            user.name = requestBody.Name;
+            user.surname = requestBody.Surname;
+            context.UserAccounts.Update(user);
+            await context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         [HttpPost("login")]
@@ -71,7 +90,7 @@ namespace SomokatAPI.Controllers
                     {
                         return StatusCode(401, "Пользователь не найден");
                     }
-                    return StatusCode(200, new { authUser.balance,authUser.Bonus, authUser.Id });
+                    return StatusCode(200, new { authUser.balance,authUser.Bonus, authUser.Id,authUser.name,authUser.surname });
                 }
             }
             catch {

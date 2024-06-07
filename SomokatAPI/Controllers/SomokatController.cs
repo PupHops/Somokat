@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Somokat;
+using SomokatAPI;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Drawing;
@@ -126,7 +126,7 @@ namespace SomokatAPI.Controllers
                 {
                     return;
                 }
-
+                
 
                 if (user.Bonus > 0 && user.Bonus !=0)
                 { user.Bonus--; }

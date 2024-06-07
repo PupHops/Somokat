@@ -69,7 +69,6 @@ function init() {
         zoom: 17
     });
 
-
     jQuery.getJSON('https://localhost:7209/Somokat', function (json) {
         /** Сохраним ссылку на геообъекты на случай, если понадобится какая-либо постобработка.
          * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/GeoQueryResult.xml

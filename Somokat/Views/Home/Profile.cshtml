@@ -4,13 +4,80 @@
 @{
 }
 <head>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
     <link rel="stylesheet" href="~/css/Style.css" />
 </head>
 <div class="full-screen-div">
+    <div class="containerrr">
+        <h2>Имя</h2>
+        <input id="inputName"  maxlength="20" />
+        <h2>Фамилия</h2>
+        <input maxlength="30" id="inputSurname" />
+        <input class="button" type="submit" onclick="Save()" value="Сохранить" />
+        <input class="button" type="submit" onclick="Exit()" value="Выйти" />
 
+    </div>
+    <script>
 
+        window.onload = function () {
+            var name = localStorage.getItem('name');
+            var surname = localStorage.getItem('surname');
+            name = name.replace(/["']/g, '');
+            surname = surname.replace(/["']/g, '');
+            document.getElementById('inputName').value = name;
+            document.getElementById('inputSurname').value = surname;
 
+        }
+     
+        function Exit() {
+            localStorage.clear();
+            window.location.href = 'https://localhost:7099/Home/Login';
+            };
+    </script>
+    <script>
+        document.getElementById('inputName').addEventListener('input', function (event) {
+            let input = event.target;
+            let value = input.value;
+            input.value = value.replace(/[^а-яА-ЯёЁ]/g, '');
+        });
+    </script>
+    <script>
+        document.getElementById('inputSurname').addEventListener('input', function (event) {
+            let input = event.target;
+            let value = input.value;
+            input.value = value.replace(/[^а-яА-ЯёЁ]/g, '');
+        });
+    </script>
+
+    <script>
+
+        function Save() {
+
+            var phoneNumber = localStorage.getItem('phoneNumber');
+            var name = document.getElementById("inputName").value;
+            var surname = document.getElementById("inputSurname").value;
+
+            var data = {
+                phoneNumber, name, surname
+            };
+            console.log(data);
+            $.ajax({
+                url: 'https://localhost:7209/Authorization/SaveNameSurname',
+                method: 'POST',
+                contentType: 'application/json', // Установка заголовка Content-Type
+                data: JSON.stringify(data),
+                success: function (response, textStatus, xhr) {
+                        localStorage.setItem('phoneNumber', phoneNumber);
+                        localStorage.setItem('name', JSON.stringify(response.name));
+                        localStorage.setItem('surname', JSON.stringify(response.surname));
+
+              
+                },
+                error: function () {
+                    alert('Пользователь не найден.');
+                }
+            });
+        }
+
+    </script>
 
 </div>
